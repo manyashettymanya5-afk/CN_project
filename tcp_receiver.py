@@ -50,9 +50,7 @@ def receive_file(
 
     try:
 
-        # -------------------------
-        # Filename length
-        # -------------------------
+      
 
         filename_length_data = receive_exact(
             client_socket,
@@ -65,9 +63,7 @@ def receive_file(
         )[0]
 
 
-        # -------------------------
-        # Filename
-        # -------------------------
+      
 
         filename_data = receive_exact(
             client_socket,
@@ -83,9 +79,7 @@ def receive_file(
         )
 
 
-        # -------------------------
-        # File size
-        # -------------------------
+      
 
         file_size_data = receive_exact(
             client_socket,
@@ -98,9 +92,6 @@ def receive_file(
         )[0]
 
 
-        # -------------------------
-        # File path
-        # -------------------------
 
         file_path = os.path.join(
             RECEIVED_FOLDER,
@@ -128,9 +119,7 @@ def receive_file(
             counter += 1
 
 
-        # -------------------------
-        # Receive file
-        # -------------------------
+        
 
         received = 0
 
