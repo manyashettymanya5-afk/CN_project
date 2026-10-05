@@ -150,7 +150,6 @@ def discover_devices():
                     TCP_PORT
                 )
 
-                # Don't show this computer itself
                 if device_ip == local_ip:
                     continue
 
@@ -160,7 +159,7 @@ def discover_devices():
                     "port": device_port
                 }
 
-                # Avoid duplicates
+                
                 if not any(
                     d["ip"] == device_ip
                     for d in devices
