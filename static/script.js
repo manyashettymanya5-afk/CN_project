@@ -77,9 +77,6 @@ const progressStatus =
 
 
 
-/* ==================================
-   DISCOVER RECEIVERS
-================================== */
 
 async function discoverReceivers() {
 
@@ -225,9 +222,6 @@ async function discoverReceivers() {
 
 
 
-/* ==================================
-   REFRESH
-================================== */
 
 refreshButton.addEventListener(
     "click",
@@ -236,9 +230,6 @@ refreshButton.addEventListener(
 
 
 
-/* ==================================
-   FILE SELECTION
-================================== */
 
 fileInput.addEventListener(
     "change",
@@ -270,9 +261,6 @@ fileInput.addEventListener(
 
 
 
-/* ==================================
-   FILE SIZE
-================================== */
 
 function formatFileSize(bytes) {
 
@@ -316,9 +304,7 @@ function formatFileSize(bytes) {
 
 
 
-/* ==================================
-   SEND FILE
-================================== */
+
 
 sendButton.addEventListener(
     "click",
@@ -438,7 +424,7 @@ sendButton.addEventListener(
         );
 
 
-        /* Browser → FilePulse progress */
+    
 
         xhr.upload.addEventListener(
             "progress",
@@ -561,12 +547,6 @@ sendButton.addEventListener(
     }
 );
 
-
-
-/* ==================================
-   STATUS
-================================== */
-
 function showStatus(
     message,
     type
@@ -605,9 +585,5 @@ function showStatus(
 }
 
 
-
-/* ==================================
-   INITIAL DISCOVERY
-================================== */
 
 discoverReceivers();
