@@ -9,21 +9,16 @@ from tcp_receiver import start_tcp_server
 from lan_discovery import start_discovery_service, discover_devices, get_local_ip
 
 
-# ============================================================
-# FILEPULSE APPLICATION
-# ============================================================
+
 
 app = Flask(__name__)
 
-# Folder for temporary uploaded files
+
 TEMP_FOLDER = "temporary_uploads"
 
 os.makedirs(TEMP_FOLDER, exist_ok=True)
 
 
-# ============================================================
-# HOME PAGE
-# ============================================================
 
 @app.route("/")
 def home():
@@ -39,9 +34,6 @@ def home():
     )
 
 
-# ============================================================
-# DISCOVER FILEPULSE DEVICES
-# ============================================================
 
 @app.route("/discover", methods=["GET"])
 def discover():
@@ -61,14 +53,12 @@ def discover():
         }), 500
 
 
-# ============================================================
-# SEND FILE
-# ============================================================
+
 
 @app.route("/send", methods=["POST"])
 def send_file():
 
-    # Check receiver IP
+   
     receiver_ip = request.form.get("receiver_ip")
 
     if not receiver_ip:
@@ -77,7 +67,7 @@ def send_file():
             "message": "Receiver IP is missing."
         }), 400
 
-    # Receiver TCP port
+    
     receiver_port = request.form.get(
         "receiver_port",
         str(TCP_PORT)
@@ -91,7 +81,7 @@ def send_file():
             "message": "Invalid receiver port."
         }), 400
 
-    # Check file
+   
     if "file" not in request.files:
         return jsonify({
             "success": False,
@@ -106,9 +96,6 @@ def send_file():
             "message": "No file selected."
         }), 400
 
-    # --------------------------------------------------------
-    # Save uploaded file temporarily
-    # --------------------------------------------------------
 
     filename = os.path.basename(uploaded_file.filename)
 
@@ -117,7 +104,7 @@ def send_file():
         filename
     )
 
-    # Prevent accidental overwrite
+   
     base, extension = os.path.splitext(filename)
     counter = 1
 
@@ -132,9 +119,7 @@ def send_file():
     try:
         uploaded_file.save(temp_path)
 
-        # ----------------------------------------------------
-        # Send file using TCP
-        # ----------------------------------------------------
+  
 
         success, message = send_file_to_receiver(
             receiver_ip,
@@ -157,7 +142,6 @@ def send_file():
 
     finally:
 
-        # Delete temporary file
         try:
             if os.path.exists(temp_path):
                 os.remove(temp_path)
@@ -165,9 +149,7 @@ def send_file():
             pass
 
 
-# ============================================================
-# TCP FILE TRANSFER
-# ============================================================
+
 
 def send_file_to_receiver(
     receiver_ip,
@@ -188,15 +170,9 @@ def send_file_to_receiver(
 
     try:
 
-        # ----------------------------------------------------
-        # Get file size
-        # ----------------------------------------------------
 
         file_size = os.path.getsize(file_path)
 
-        # ----------------------------------------------------
-        # Create TCP socket
-        # ----------------------------------------------------
 
         client_socket = socket.socket(
             socket.AF_INET,
@@ -215,17 +191,13 @@ def send_file_to_receiver(
 
         print("Connected to receiver.")
 
-        # ----------------------------------------------------
-        # Prepare filename
-        # ----------------------------------------------------
+     
 
         filename_bytes = filename.encode("utf-8")
 
         filename_length = len(filename_bytes)
 
-        # ----------------------------------------------------
-        # Send filename length
-        # ----------------------------------------------------
+      
 
         client_socket.sendall(
             struct.pack(
@@ -234,17 +206,12 @@ def send_file_to_receiver(
             )
         )
 
-        # ----------------------------------------------------
-        # Send filename
-        # ----------------------------------------------------
+  
 
         client_socket.sendall(
             filename_bytes
         )
 
-        # ----------------------------------------------------
-        # Send file size
-        # ----------------------------------------------------
 
         client_socket.sendall(
             struct.pack(
@@ -253,9 +220,6 @@ def send_file_to_receiver(
             )
         )
 
-        # ----------------------------------------------------
-        # Send file data
-        # ----------------------------------------------------
 
         bytes_sent = 0
 
@@ -276,9 +240,6 @@ def send_file_to_receiver(
             f"File sent: {bytes_sent} bytes"
         )
 
-        # ----------------------------------------------------
-        # Wait for receiver confirmation
-        # ----------------------------------------------------
 
         try:
 
@@ -300,9 +261,7 @@ def send_file_to_receiver(
 
         client_socket.close()
 
-        # ----------------------------------------------------
-        # Check receiver response
-        # ----------------------------------------------------
+     
 
         if response == "FILE_RECEIVED":
 
@@ -349,9 +308,6 @@ def send_file_to_receiver(
         )
 
 
-# ============================================================
-# START FILEPULSE SERVICES
-# ============================================================
 
 def start_filepulse():
 
@@ -361,9 +317,7 @@ def start_filepulse():
     print("      Local Network Data Transfer System")
     print("=" * 55)
 
-    # --------------------------------------------------------
-    # Get local IP
-    # --------------------------------------------------------
+
 
     try:
         local_ip = get_local_ip()
@@ -375,9 +329,6 @@ def start_filepulse():
     print(f"Web server port: {WEB_PORT}")
     print(f"TCP transfer port: {TCP_PORT}")
 
-    # --------------------------------------------------------
-    # Start TCP receiver
-    # --------------------------------------------------------
 
     tcp_thread = threading.Thread(
         target=start_tcp_server,
@@ -390,9 +341,7 @@ def start_filepulse():
         f"TCP receiver running on port {TCP_PORT}"
     )
 
-    # --------------------------------------------------------
-    # Start LAN discovery
-    # --------------------------------------------------------
+  
 
     start_discovery_service()
 
@@ -427,9 +376,6 @@ def start_filepulse():
     print()
 
 
-# ============================================================
-# MAIN
-# ============================================================
 
 if __name__ == "__main__":
 
