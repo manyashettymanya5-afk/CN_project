@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        FilePulse - LAN File Transfer
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+<header>
+
+    <div class="logo">
+        File<span>Pulse</span>
+    </div>
+
+    <div class="status">
+        <span></span>
+        LAN Connected
+    </div>
+
+</header>
+
+
+<main>
+
+    <section class="hero">
+
+        <h1>
+            Local Network Data Transfer
+        </h1>
+
+        <p>
+            Discover nearby systems and transfer
+            files directly over your LAN.
+        </p>
+
+    </section>
+
+
+    <!-- NETWORK -->
+
+    <section class="network-card">
+
+        <h2>
+            🌐 Your Network
+        </h2>
+
+        <div class="network-grid">
+
+            <div class="info-box">
+
+                <small>
+                    Your IP Address
+                </small>
+
+                <strong>
+                    {{ local_ip }}
+                </strong>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <small>
+                    Protocol
+                </small>
+
+                <strong>
+                    TCP/IP
+                </strong>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <small>
+                    TCP Port
+                </small>
+
+                <strong>
+                    {{ tcp_port }}
+                </strong>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <small>
+                    Network
+                </small>
+
+                <strong>
+                    Local LAN
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SEND -->
+
+    <section class="transfer-card">
+
+        <h2>
+            📤 Send File
+        </h2>
+
+        <p class="subtitle">
+            Select a receiver from the systems
+            discovered on your LAN.
+        </p>
+
+
+        <!-- DISCOVER -->
+
+        <div class="receiver-header">
+
+            <label>
+                Receiver System
+            </label>
+
+            <button
+                type="button"
+                id="refreshButton"
+                class="refresh-button"
+            >
+                🔄 Find Systems
+            </button>
+
+        </div>
+
+
+        <select
+            id="receiverSelect"
+        >
+
+            <option value="">
+                Searching for FilePulse systems...
+            </option>
+
+        </select>
+
+
+        <div
+            class="discovery-status"
+            id="discoveryStatus"
+        >
+            Searching for systems on your LAN...
+        </div>
+
+
+        <!-- FILE -->
+
+        <div class="file-section">
+
+            <label>
+                Select File
+            </label>
+
+
+            <div class="file-area">
+
+                <div class="upload-icon">
+                    📁
+                </div>
+
+                <h3>
+                    Choose a file to send
+                </h3>
+
+                <p>
+                    PDFs, images, documents,
+                    videos and other files
+                </p>
+
+
+                <input
+                    type="file"
+                    id="fileInput"
+                >
+
+
+                <label
+                    for="fileInput"
+                    class="select-button"
+                >
+                    Select File
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <!-- FILE INFORMATION -->
+
+        <div
+            class="selected-file"
+            id="selectedFile"
+        >
+
+            <div class="file-icon">
+                📄
+            </div>
+
+            <div>
+
+                <strong
+                    id="fileName"
+                ></strong>
+
+                <small
+                    id="fileSize"
+                ></small>
+
+            </div>
+
+        </div>
+
+
+        <!-- SEND BUTTON -->
+
+        <button
+            type="button"
+            id="sendButton"
+            class="send-button"
+        >
+            🚀 Send File
+        </button>
+
+
+        <!-- STATUS -->
+
+        <div
+            class="transfer-status"
+            id="transferStatus"
+        >
+            Ready.
+        </div>
+
+
+        <!-- PROGRESS -->
+
+        <div
+            class="progress-container"
+            id="progressContainer"
+        >
+
+            <div class="progress-header">
+
+                <span id="progressStatus">
+                    Sending...
+                </span>
+
+                <span id="progressText">
+                    0%
+                </span>
+
+            </div>
+
+
+            <div class="progress-bar">
+
+                <div
+                    class="progress-fill"
+                    id="progressFill"
+                ></div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- HOW IT WORKS -->
+
+    <section class="how-section">
+
+        <h2>
+            How FilePulse Works
+        </h2>
+
+
+        <div class="steps">
+
+            <div class="step">
+
+                <div class="number">
+                    1
+                </div>
+
+                <h3>
+                    Discover
+                </h3>
+
+                <p>
+                    FilePulse searches for
+                    systems on the same LAN.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="number">
+                    2
+                </div>
+
+                <h3>
+                    Select Receiver
+                </h3>
+
+                <p>
+                    Select the destination
+                    computer from the list.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="number">
+                    3
+                </div>
+
+                <h3>
+                    Select File
+                </h3>
+
+                <p>
+                    Choose the file that
+                    you want to transfer.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="number">
+                    4
+                </div>
+
+                <h3>
+                    TCP Transfer
+                </h3>
+
+                <p>
+                    The file is transferred
+                    directly through TCP/IP.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <strong>
+        FilePulse
+    </strong>
+
+    — Local Network Data Transfer System
+
+    <br><br>
+
+    LAN • TCP/IP • Socket Programming •
+    Client-Server Architecture
+
+</footer>
+
+
+<script
+    src="{{ url_for('static', filename='script.js') }}"
+></script>
+
+</body>
+
+</html>
